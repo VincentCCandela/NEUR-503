@@ -1,0 +1,133 @@
+Part I) Spike train statistics.
+
+A) Making a binary representation of a spike train
+
+1) What is the frequency at which Vm was sampled at? (hint: look at timeaxis).
+
+DONE
+Every 9.6e-5 seconds.
+
+2) Set an appropriate threshold and compute the indices at which the membrane 
+potential crosses this threshold from below.  (hint: you can loop over the 
+values of Vm with a command like “find(Vm(j)>thresh & Vm(j-1)<thresh)”). 
+Finally, you can convert these indices into times by multiplying them by 
+the sampling time step (i.e. the inverse of the sampling frequency). 
+
+DONE
+I chose a threshold of -13 mV from a manual visual inspection of the spike graph.
+I got 2551 spikes.
+
+3) Finally, make a binary representation of the spike train with the following 
+time steps: 1 msec, 0.5 msec, 0.1 msec. Keep these as you’ll need them later. 
+(hint: first figure out how many elements the binary vector will have. Then 
+you have to convert the spike times into the appropriate bin 
+numbers, which you can do by “indices=round(spiketimes/binwidth)”, and then 
+set the elements of the appropriate bins to 1/binwidth).
+
+DONE
+
+B) Interspike interval Statistics. 
+
+1) Compute the interspike interval sequence from the spike times 
+(hint: the diff function may be useful or you can use a for loop). 
+
+DONE
+
+2) Compute the interspike interval histogram with a binwidth 
+of 1 msec going up to 200 msec
+
+DONE
+
+3) How variable is this neuron? Answer the question by 
+computing the CV. Is it more variable than a Poisson process?
+
+DONE
+cv = 1.2732676407522387
+Because cv = std/mean, a cv > 1 means that there is more variation than a poisson process
+which has a cv = 1.
+
+4)Compute the interspike interval correlation coefficients. 
+Is this spike train a renewal process? 
+
+DONE
+This is a renewal process because rho_(i≠0)=0
+
+C)Autocorrelation function and Power spectrum
+
+1) Compute the autocorrelation functions of the binary representations 
+that you computed in part A). From these, what is the neuron’s absolute 
+refractory period? Does this neuron have a tendency to produce packets of action potentials? 
+
+DONE
+The neuron's absolute refractory period is roughly 0.0004 to 0.0005 ms. In the 0.0005 
+bin set, there is a high correlation with tau = 0,1 which corresspons to refractory 
+periods of 0.0005 and 0.001 ms. Simarly, in the 0.0001 bin set, there are correlations with 
+tau = 0,4. Therefore, the absolute refractory period is somewhere between 0.0004 and 0.0005 ms.
+Because this neuron has significant correlations at 0.0005, and 0.001, 0.002 ms and not just 
+0.0001 ms, this neuron does have a tendency to produce packets of action potentions.
+
+2) Compute the power spectra of these binary representations. Remember that 
+they are sampled at different frequencies. Compare these power spectra. What is 
+the effect of changing the sampling frequency? What is the neuron’s firing rate? 
+Finally, compare these spectra with the one obtained from a Poisson 
+process with the same firing rate. 
+
+Increasing the sampling rate increases the power density in the graph.
+The 0.1 ms sample had sharp peaks at (1.95,142), (15.6, 156), (36, 133) 
+where the 15.6 peak was the tallest and a soft peak at (500, 110)
+The 0.5 ms sample had soft peaks at roughly (7.8), (74, 31), (170, 25)
+The 1 ms sample had soft peaks at roughly (15, 14), (160, 12).
+
+Therefore, the neuron has a firing rate of 15.6 Hz.
+
+The PSD of the Poisson process is completely flat while the 
+other three PSD are not.
+
+Part II) Measures of Neural Encoding:
+
+A) Raster plots and PSTH
+1) Plot the data in raster format. (hint: you simply have to plot 
+the appropriate two columns of data, you may also have to zoom in). 
+
+DONE (with it already zoomed in)
+
+2) Build a PSTH from the data with binwidth 1 msec. To do this, you 
+have to make a vector of appropriate length (i.e. the length of one 
+epoch divided by the binwidth) and count the number of spikes in 
+each bin. Then divide that number by the number of epochs and by 
+the binwidth to obtain the firing rate. 
+
+DONE
+Calculated Firing Rate: 
+
+B) Cross-correlation function and transfer function
+1) Make a binary representation of each trial at 2kHz and 
+compute the cross-correlation function between trial1 and the 
+stimulus. Repeat for trial 20. Are the cross-correlation functions 
+similar? Finally, compute the cross-correlation function averaged 
+across all trial. 
+
+From a visual inspection of the three cross-correlation tests,
+yes, the tests are very similar. They start off negatively correlated,
+but increase over time until they are positively correlated. 
+The tests indicate a positive correlation.
+There was a very strange spike around bin indices 50,030 for all three tests.
+
+2) Compute the cross-spectrum between the stimulus and the spike 
+train from epoch 1. Use the formula seen in class to estimate both 
+gain and phase as a function of frequency. Normalize the gain by its 
+value at f=1 Hz. Remember that the stimulus only has power up to about 30Hz. 
+
+DONE
+
+C) Signal-to-noise Ratio 
+1) Take the average across trials of the binary vector and compute 
+its power spectrum. Now, subtract the average binary vector from 
+each trial and computethe power spectrum, then average these over the 
+trials. Finally, compute the signal-to-noise ratio as a function of 
+frequency. Compare the shape of the gain and signal-to-noise ratio curves. 
+
+The signal-to-noise ratio (SNR) was consistently greater than the gain. 
+However, the SNR spiked initially before flattening out to slightly 
+greater than zero while the gain gradually decreased before stabilizing just greater than zero.
+

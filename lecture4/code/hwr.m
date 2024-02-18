@@ -1,0 +1,1 @@
+function output = hwr(input)%% half-wave rectification - set negative values to zero%% usage: output = hwr(input)output = (abs(input) + input)/2;% output = input.*(input>0);

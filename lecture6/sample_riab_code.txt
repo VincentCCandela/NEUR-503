@@ -1,0 +1,64 @@
+# Sample Code from Ratinabox
+
+# From Agent       ----------------------------------------------------------------------------
+self.history = {}
+self.history["t"] = []
+self.history["pos"] = []
+self.history["vel"] = []
+self.history["rot_vel"] = []
+self.history["head_direction"] = []
+
+# From Neurons     ----------------------------------------------------------------------------
+
+MyNeuronClass(Neurons):
+
+    default_params = {'a_default_param":3.14159} # default params dictionary is defined 
+    in the preamble, as a class attribute. Note its values are passed upwards and used 
+    in all the parents classes of your class.
+
+    def __init__(self,
+                    Agent,
+                    params={}): #<-- do not change these
+
+
+        self.params = copy.deepcopy(__class__.default_params) 
+        
+        # to get the default param 
+        # dictionary of the current class, defined in the preamble, use __class__. Then, 
+        # make sure to deepcopy it, as only making a shallow copy can have unintended 
+        # consequences (i.e., any modifications to it would be propagated to ALL instances of this class!).
+
+        self.params.update(params)
+
+        super().__init__(Agent,self.params)
+
+    def get_state(self,
+                    evaluate_at='agent',
+                    **kwargs) #<-- do not change these
+
+        firingrate = .....
+        ###
+            Insert here code which calculates the firing rate.
+            This may work differently depending on what you set evaluate_at as. 
+            For example, evaluate_at == 'agent' should means that the position or 
+            velocity (or whatever determines the firing rate) will by evaluated 
+            using the agents current state. You might also like to have an option 
+            like evaluate_at == "all" (all positions across an environment are 
+            tested simultaneously - plot_rate_map() tries to call this, for example) 
+            or evaluate_at == "last" (in a feedforward layer just look at the last 
+            firing rate saved in the input layers saves time over recalculating them.). 
+            **kwargs allows you to pass position or velocity in manually.
+
+            By default, the Neurons.update() calls Neurons.get_state() without passing 
+            any arguments. So write the default behaviour of get_state() to be what you 
+            want it to do in the main training loop, .
+        ###
+
+        return firingrate
+
+    def any_other_functions_you_might_want(self):...
+
+
+# From Environment ----------------------------------------------------------------------------
+add_object()
+ plot_environment()
